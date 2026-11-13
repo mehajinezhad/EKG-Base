@@ -4,8 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>مبانی نوار قلب — درس گام‌به‌گام برای دانشجویان فوریت‌های پزشکی</title>
+
+<!-- ═══════════════════════════════════════════════════════════
+     بارگذاری فونت — در HEAD قبل از CSS اصلی برای اطمینان از رجیستر شدن
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  var b64 = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21laGFqaW5lemhhZC9FQ0dfQXhpc19JbnRlcnByZXRhdGlvbi9tYWluL0lSQU55ZWthblhWRmFOdW1WRi50dGY=';
+  var url;
+  try { url = atob(b64); } catch(e) { return; }
+  if (!url) return;
+  var style = document.createElement('style');
+  style.setAttribute('data-font', 'primary');
+  style.textContent =
+    '@font-face{' +
+      'font-family:"IRANYekanXVFaNum";' +
+      'src:url("' + url + '") format("truetype");' +
+      'font-weight:100 900;' +
+      'font-style:normal;' +
+      'font-display:swap;' +
+    '}';
+  document.head.appendChild(style);
+})();
+</script>
+
 <style>
-  /* فونت به صورت داینامیک در جاوااسکریپت لود می‌شود تا در سورس قابل جستجو نباشد */
+  /* فونت‌های پشتیبان در صورت عدم بارگذاری فونت اصلی */
+  @font-face {
+    font-family: 'IRANYekanXVFaNum-fallback';
+    src: local('Tahoma'), local('Arial'), local('sans-serif');
+    font-display: swap;
+  }
+
   :root{
     --bg:#eef3f8;--card:#ffffff;--ink:#16283a;--muted:#5b6b7c;--line:#d9e4ee;
     --brand:#0f6e8c;--brand-dark:#0b5b74;--brand2:#008080;
@@ -247,7 +277,7 @@
   .qrs-rules-caption{font-size:.9em;color:var(--brand-dark);font-weight:700;margin-top:10px}
 
   /* ============================================================
-     نوار ناوبری شناور پایین — وسط چین، رنگارنگ
+     نوار ناوبری شناور پایین
   ============================================================ */
   .bottom-nav {
     position: fixed;
@@ -312,7 +342,7 @@
 
 <!-- QR sidebar -->
 <div class="qr-sidebar" aria-label="کارت تماس">
-  <img class="avatar" data-b64-src="" alt="تصویر مدرس">
+  <img class="avatar" data-b64-src="profile" alt="تصویر مدرس">
   <a href="tel:+989173789811" class="qr-box" id="qrBox" title="تماس با مدرس" aria-label="برای تماس کلیک کنید"></a>
   <p class="scan-text">مرا اسکن کن</p>
   <div class="qr-contact-text">
@@ -463,7 +493,7 @@
     <p>نشان‌دهنده <b>دپلاریزاسیون بطن‌ها</b>. مقدار طبیعی کمتر از ۰/۱۲ ثانیه.</p>
 
     <div class="img-container small-img" oncontextmenu="return false;">
-      <img data-b64-src="" alt="نام‌گذاری کمپلکس QRS" loading="lazy" draggable="false" class="obfuscated-img">
+      <img data-b64-src="ekg" alt="نام‌گذاری کمپلکس QRS" loading="lazy" draggable="false" class="obfuscated-img">
       <p class="img-caption">انواع مورفولوژی (شکل) کمپلکس QRS و نام‌گذاری آن‌ها</p>
     </div>
 
@@ -643,7 +673,7 @@
     </div>
 
     <div class="img-container small-img" oncontextmenu="return false;">
-      <img data-b64-src="" alt="محل قرارگیری لیدهای نوار قلب" loading="lazy" draggable="false" class="obfuscated-img">
+      <img data-b64-src="leads" alt="محل قرارگیری لیدهای نوار قلب" loading="lazy" draggable="false" class="obfuscated-img">
       <p class="img-caption">محل صحیح قرارگیری لیدهای اندامی و پره‌کوردیال (V1-V6) روی بدن بیمار</p>
     </div>
 
@@ -894,13 +924,8 @@
 (function(){
   'use strict';
 
-  /* لود منابع */
-  (function initResources() {
-    var fontUrl = atob('aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21laGFqaW5lemhhZC9FQ0dfQXhpc19JbnRlcnByZXRhdGlvbi9tYWluL0lSQU55ZWthblhWRmFOdW1WRi50dGY=');
-    var style = document.createElement('style');
-    style.innerHTML = "@font-face { font-family: 'IRANYekanXVFaNum'; src: url('" + fontUrl + "') format('truetype'); font-weight: normal; font-style: normal; font-display: swap; }";
-    document.head.appendChild(style);
-
+  /* بارگذاری تصاویر (فونت در head بارگذاری شده) */
+  (function initImages() {
     var imagesData = {
       profile: 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21laGFqaW5lemhhZC9FQ0dfQXhpc19JbnRlcnByZXRhdGlvbi9tYWluL1Byb2ZpbGUucG5n',
       ekg: 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL21laGFqaW5lemhhZC9FS0ctUGljdHVyZXMvbWFpbi9FS0cucG5n',
@@ -967,7 +992,7 @@
   })();
 
   /* ذخیره‌سازی */
-  var KEY = 'ecg-basics-v8';
+  var KEY = 'ecg-basics-v9';
   var state = (function(){
     try{
       var r = localStorage.getItem(KEY);
@@ -1062,7 +1087,6 @@
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
     svg.setAttribute('class', 'ecg-svg');
-    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     var grid = '';
     for(var x = 0; x <= W; x += unit){
       var bigX = (x / unit) % 5 === 0;
@@ -1420,148 +1444,81 @@
     save();
   });
 
-  /* ============================================================
-     تمرین نهایی — آزمون جامع (۱۲ پرسش)
-  ============================================================ */
+  /* آزمون جامع نهایی — ۱۲ پرسش */
   var FINAL_DATA = [
-    // --- Morphology questions (step 2) ---
-    {
-      id: 'f1', type: 'morphology', topic: 'نام‌گذاری QRS',
+    { id: 'f1', type: 'morphology', topic: 'نام‌گذاری QRS',
       morph: { r: 0.2, S: -1.0, R2: 0.8, s2: -0.15 }, label: 'rsR\'',
       title: 'نام‌گذاری کمپلکس QRS',
       desc: 'الگوی سه‌فازی با موج r کوچک اولیه، S عمیق و R\' بلند ثانویه.',
       question: 'کدام گزینه بیانگر نام‌گذاری صحیح این کمپلکس QRS است؟',
-      options: ['rsR\'', 'Rr\'', 'qR', 'QS'],
-      correct: 0,
-      explanation: 'در این الگو، موج مثبت اول کوچک (r)، سپس موج منفی عمیق (S) و در نهایت موج مثبت بلندتر (R\') دیده می‌شود. بنابراین rsR\' صحیح است.'
-    },
-    {
-      id: 'f2', type: 'morphology', topic: 'نام‌گذاری QRS',
+      options: ['rsR\'', 'Rr\'', 'qR', 'QS'], correct: 0,
+      explanation: 'موج مثبت اول کوچک (r)، سپس موج منفی عمیق (S) و در نهایت موج مثبت بلندتر (R\'). نام‌گذاری صحیح: rsR\'.' },
+    { id: 'f2', type: 'morphology', topic: 'نام‌گذاری QRS',
       morph: { R: 1.0, s: -0.2, R2: 0.5 }, label: 'RsR\'',
       title: 'نام‌گذاری کمپلکس QRS',
       desc: 'موج R اول بزرگ، یک موج s کم‌عمق و یک موج R\' ثانویه.',
       question: 'کدام گزینه بیانگر نام‌گذاری صحیح این کمپلکس QRS است؟',
-      options: ['RSR\'', 'RsR\'', 'Rr\'', 'rSR\''],
-      correct: 1,
-      explanation: 'موج منفی بین دو موج مثبت کم‌عمق است (s کوچک)، بنابراین RsR\' صحیح است. اگر عمیق‌تر بود، S بزرگ استفاده می‌شد.'
-    },
-    // --- Conduction system (step 1) ---
-    {
-      id: 'f3', type: 'text', topic: 'سیستم هدایتی',
+      options: ['RSR\'', 'RsR\'', 'Rr\'', 'rSR\''], correct: 1,
+      explanation: 'موج منفی بین دو موج مثبت کم‌عمق است (s کوچک). نام‌گذاری صحیح: RsR\'.' },
+    { id: 'f3', type: 'text', topic: 'سیستم هدایتی',
       title: 'ضربان‌ساز طبیعی قلب',
       question: 'ضربان‌ساز طبیعی قلب کدام ساختار است؟',
       options: ['گره دهلیزی-بطنی (AV Node)', 'دسته هیس', 'گره سینوسی-دهلیزی (SA Node)', 'الیاف پورکنژ'],
       correct: 2,
-      explanation: 'گره سینوسی-دهلیزی (SA Node) با سرعت ذاتی ۶۰ تا ۱۰۰ بار در دقیقه، ضربان‌ساز طبیعی قلب است. گره AV (۴۰-۶۰)، دسته هیس و الیاف پورکنژ (۲۰-۴۰) ضربان‌سازهای ثانویه (Escape) هستند.'
-    },
-    {
-      id: 'f4', type: 'text', topic: 'سیستم هدایتی',
+      explanation: 'گره سینوسی-دهلیزی با سرعت ذاتی ۶۰ تا ۱۰۰ بار در دقیقه ضربان‌ساز طبیعی است.' },
+    { id: 'f4', type: 'text', topic: 'سیستم هدایتی',
       title: 'مسیر هدایت الکتریکی',
       question: 'ترتیب صحیح انتقال پیام الکتریکی در قلب کدام است؟',
-      options: [
-        'گره AV ← گره SA ← دسته هیس ← پورکنژ',
-        'گره SA ← گره AV ← دسته هیس ← شاخه‌ها ← پورکنژ',
-        'دسته هیس ← گره SA ← گره AV ← پورکنژ',
-        'پورکنژ ← گره SA ← گره AV ← دسته هیس'
-      ],
+      options: ['گره AV ← گره SA ← دسته هیس ← پورکنژ', 'گره SA ← گره AV ← دسته هیس ← شاخه‌ها ← پورکنژ', 'دسته هیس ← گره SA ← گره AV ← پورکنژ', 'پورکنژ ← گره SA ← گره AV ← دسته هیس'],
       correct: 1,
-      explanation: 'پیام از گره SA (ضربان‌ساز) شروع شده، به گره AV می‌رسد (تأخیر کوتاه)، سپس از طریق دسته هیس و شاخه‌های راست/چپ به الیاف پورکنژ و در نهایت به عضله بطن‌ها منتقل می‌شود.'
-    },
-    // --- ECG components (step 2) ---
-    {
-      id: 'f5', type: 'text', topic: 'اجزای نوار قلب',
+      explanation: 'پیام از گره SA ← گره AV ← دسته هیس ← شاخه‌ها ← پورکنژ ← عضله بطن.' },
+    { id: 'f5', type: 'text', topic: 'اجزای نوار قلب',
       title: 'موج P و دپلاریزاسیون دهلیزی',
       question: 'موج P در نوار قلب نشان‌دهنده کدام رویداد است؟',
-      options: [
-        'دپلاریزاسیون بطن‌ها',
-        'رپلاریزاسیون دهلیزها',
-        'دپلاریزاسیون دهلیزها',
-        'رپلاریزاسیون بطن‌ها'
-      ],
+      options: ['دپلاریزاسیون بطن‌ها', 'رپلاریزاسیون دهلیزها', 'دپلاریزاسیون دهلیزها', 'رپلاریزاسیون بطن‌ها'],
       correct: 2,
-      explanation: 'موج P نشان‌دهنده دپلاریزاسیون (تحریک الکتریکی) دهلیزها است. وجود موج P قبل از هر QRS، نشانه ریتم سینوسی است.'
-    },
-    {
-      id: 'f6', type: 'text', topic: 'اجزای نوار قلب',
+      explanation: 'موج P نشان‌دهنده دپلاریزاسیون دهلیزها است و وجود آن قبل از QRS نشانه ریتم سینوسی است.' },
+    { id: 'f6', type: 'text', topic: 'اجزای نوار قلب',
       title: 'موج T',
       question: 'موج T در نوار قلب نشان‌دهنده کدام رویداد الکتریکی است؟',
-      options: [
-        'دپلاریزاسیون دهلیزها',
-        'دپلاریزاسیون بطن‌ها',
-        'رپلاریزاسیون بطن‌ها',
-        'رپلاریزاسیون دهلیزها'
-      ],
+      options: ['دپلاریزاسیون دهلیزها', 'دپلاریزاسیون بطن‌ها', 'رپلاریزاسیون بطن‌ها', 'رپلاریزاسیون دهلیزها'],
       correct: 2,
-      explanation: 'موج T نشان‌دهنده رپلاریزاسیون (بازگشت به حالت استراحت) بطن‌ها است. معمولاً متقارن و مثبت در بیشتر لیدها، با ارتفاع کمتر از ۰/۵ mV در لیدهای اندامی.'
-    },
-    {
-      id: 'f7', type: 'ecg', topic: 'اجزای نوار قلب', ecgType: 'labeled',
+      explanation: 'موج T نشان‌دهنده رپلاریزاسیون (بازگشت به استراحت) بطن‌ها است.' },
+    { id: 'f7', type: 'ecg', topic: 'اجزای نوار قلب', ecgType: 'labeled',
       title: 'شناسایی اجزای نوار قلب',
       desc: 'نوار قلب با برچسب‌های P، QRS، T، PR و QT.',
       question: 'در این نوار، فاصله PR از کجا تا کجا اندازه‌گیری می‌شود؟',
-      options: [
-        'از انتهای موج P تا انتهای QRS',
-        'از ابتدای موج P تا ابتدای QRS',
-        'از ابتدای QRS تا انتهای T',
-        'از انتهای QRS تا ابتدای T'
-      ],
+      options: ['از انتهای موج P تا انتهای QRS', 'از ابتدای موج P تا ابتدای QRS', 'از ابتدای QRS تا انتهای T', 'از انتهای QRS تا ابتدای T'],
       correct: 1,
-      explanation: 'فاصله PR از ابتدای موج P تا ابتدای کمپلکس QRS اندازه‌گیری می‌شود و نشان‌دهنده زمان انتقال از گره سینوسی به گره AV است. مقدار نرمال: ۰/۱۲ تا ۰/۲۰ ثانیه (۳ تا ۵ مربع کوچک).'
-    },
-    // --- Measurements (step 3) ---
-    {
-      id: 'f8', type: 'text', topic: 'اندازه‌گیری',
+      explanation: 'فاصله PR از ابتدای موج P تا ابتدای QRS است. نرمال: ۰/۱۲ تا ۰/۲۰ ثانیه.' },
+    { id: 'f8', type: 'text', topic: 'اندازه‌گیری',
       title: 'مقیاس کاغذ شطرنجی',
       question: 'در سرعت استاندارد ۲۵ mm/s، هر مربع کوچک (۱ میلی‌متر) معادل چند ثانیه است؟',
-      options: ['۰/۰۱ ثانیه', '۰/۰۲ ثانیه', '۰/۰۴ ثانیه', '۰/۱۰ ثانیه'],
-      correct: 2,
-      explanation: 'در سرعت استاندارد ۲۵ mm/s، هر مربع کوچک (۱ میلی‌متر) معادل ۰/۰۴ ثانیه و هر مربع بزرگ (۵ میلی‌متر) معادل ۰/۲۰ ثانیه است. اگر سرعت ۵۰ mm/s باشد، هر مربع کوچک ۰/۰۲ ثانیه خواهد بود.'
-    },
-    {
-      id: 'f9', type: 'text', topic: 'اندازه‌گیری',
+      options: ['۰/۰۱ ثانیه', '۰/۰۲ ثانیه', '۰/۰۴ ثانیه', '۰/۱۰ ثانیه'], correct: 2,
+      explanation: 'در سرعت ۲۵ mm/s، هر مربع کوچک = ۰/۰۴ ثانیه و هر مربع بزرگ = ۰/۲۰ ثانیه.' },
+    { id: 'f9', type: 'text', topic: 'اندازه‌گیری',
       title: 'عرض طبیعی QRS',
       question: 'مقدار طبیعی عرض کمپلکس QRS چقدر است؟',
       options: ['کمتر از ۰/۰۸ ثانیه', 'کمتر از ۰/۱۲ ثانیه', 'بین ۰/۱۲ تا ۰/۲۰ ثانیه', 'بیشتر از ۰/۲۰ ثانیه'],
       correct: 1,
-      explanation: 'عرض طبیعی QRS کمتر از ۰/۱۲ ثانیه (۳ مربع کوچک) است. عرض بیش از ۰/۱۲ ثانیه نشانه اختلال هدایتی (مانند بلوک شاخه‌ای) است، زیرا دپلاریزاسیون بطن از مسیر کندتر عبور می‌کند.'
-    },
-    // --- Leads (step 4) ---
-    {
-      id: 'f10', type: 'text', topic: 'لیدها',
-      title: 'محل قرارگیری لیدهای پره‌کوردیال',
+      explanation: 'عرض QRS طبیعی کمتر از ۰/۱۲ ثانیه است. بیشتر از این مقدار نشانه اختلال هدایتی است.' },
+    { id: 'f10', type: 'text', topic: 'لیدها',
+      title: 'محل قرارگیری لید V4',
       question: 'لید V4 در کدام محل آناتومیک قرار می‌گیرد؟',
-      options: [
-        'فضای بین‌دنده‌ای چهارم، کنار راست استرنوم',
-        'فضای بین‌دنده‌ای چهارم، کنار چپ استرنوم',
-        'فضای بین‌دنده‌ای پنجم، خط میدکلاویکولار چپ',
-        'فضای بین‌دنده‌ای پنجم، خط آگزیلاری قدامی چپ'
-      ],
+      options: ['ICS چهارم، کنار راست استرنوم', 'ICS چهارم، کنار چپ استرنوم', 'ICS پنجم، خط میدکلاویکولار چپ', 'ICS پنجم، خط آگزیلاری قدامی چپ'],
       correct: 2,
-      explanation: 'لید V4 در فضای بین‌دنده‌ای پنجم، در خط میدکلاویکولار چپ قرار می‌گیرد. V1 و V2 در ICS چهارم کنار استرنوم راست/چپ، V3 وسط بین V2 و V4، V5 و V6 در ICS پنجم خطوط آگزیلاری هستند.'
-    },
-    {
-      id: 'f11', type: 'text', topic: 'لیدها',
+      explanation: 'V4 در ICS پنجم، خط میدکلاویکولار چپ قرار می‌گیرد.' },
+    { id: 'f11', type: 'text', topic: 'لیدها',
       title: 'لیدهای ناحیه تحتانی قلب',
       question: 'کدام لیدها ناحیه تحتانی (Inferior) قلب را بهتر نشان می‌دهند؟',
-      options: ['V1 و V2', 'V3 و V4', 'V5 و V6', 'II، III و aVF'],
-      correct: 3,
-      explanation: 'لیدهای II، III و aVF به ناحیه تحتانی (دیواره تحتانی) قلب نگاه می‌کنند. این لیدها در تشخیص انفارکتوس دیواره تحتانی نقش کلیدی دارند.'
-    },
-    // --- Technical errors (step 5) ---
-    {
-      id: 'f12', type: 'ecg', topic: 'خطاهای فنی', ecgType: 'muscle',
+      options: ['V1 و V2', 'V3 و V4', 'V5 و V6', 'II، III و aVF'], correct: 3,
+      explanation: 'لیدهای II، III و aVF ناحیه تحتانی قلب را نشان می‌دهند.' },
+    { id: 'f12', type: 'ecg', topic: 'خطاهای فنی', ecgType: 'muscle',
       title: 'تشخیص خطای فنی',
       desc: 'خط پایه با امواج پرفرکانس و پرهرج‌ومرج مختل شده است.',
       question: 'این نوار چه خطای فنی را نشان می‌دهد؟',
-      options: [
-        'جابجایی لیدهای اندامی (RA/LA)',
-        'آرتیفکت عضلانی (Muscle Tremor)',
-        'کالیبراسیون نامناسب',
-        'سرعت کاغذ نامناسب'
-      ],
-      correct: 1,
-      explanation: 'خط پایه پرنویز با امواج پرفرکانس و پرهرج‌ومرج، مشخصه آرتیفکت عضلانی است که بر اثر لرزش عضلانی (لرز، اضطراب، پارکینسون) رخ می‌دهد. راه‌حل: آرام کردن بیمار، گرم کردن، یا بررسی اتصال الکترودها.'
-    }
+      options: ['جابجایی لیدهای اندامی (RA/LA)', 'آرتیفکت عضلانی (Muscle Tremor)', 'کالیبراسیون نامناسب', 'سرعت کاغذ نامناسب'], correct: 1,
+      explanation: 'خط پایه پرنویز با امواج پرفرکانس، مشخصه آرتیفکت عضلانی (لرزش) است.' }
   ];
 
   var finalsContainer = document.getElementById('finalsContainer');
@@ -1579,23 +1536,16 @@
     var wrap = document.createElement('div');
     wrap.className = 'final-card';
     wrap.setAttribute('data-id', fc.id);
-
     var ecgHtml = '';
     if (fc.type === 'morphology') {
-      ecgHtml = '<div class="ecg-box" data-final-type="morphology" data-morph="' + encodeURIComponent(JSON.stringify(fc.morph)) + '" data-label="' + fc.label + '">' +
-        '<div class="ecg-header"><span><strong>کمپلکس QRS</strong></span><span>۲۵ mm/s · ۱۰ mm/mV</span></div>' +
-        '</div>';
+      ecgHtml = '<div class="ecg-box" data-final-type="morphology" data-morph="' + encodeURIComponent(JSON.stringify(fc.morph)) + '" data-label="' + fc.label + '"><div class="ecg-header"><span><strong>کمپلکس QRS</strong></span><span>۲۵ mm/s · ۱۰ mm/mV</span></div></div>';
     } else if (fc.type === 'ecg') {
-      ecgHtml = '<div class="ecg-box" data-final-type="ecg" data-ecg-type="' + fc.ecgType + '">' +
-        '<div class="ecg-header"><span><strong>نوار قلب</strong></span><span>۲۵ mm/s · ۱۰ mm/mV</span></div>' +
-        '</div>';
+      ecgHtml = '<div class="ecg-box" data-final-type="ecg" data-ecg-type="' + fc.ecgType + '"><div class="ecg-header"><span><strong>نوار قلب</strong></span><span>۲۵ mm/s · ۱۰ mm/mV</span></div></div>';
     }
-
     var optionsHtml = '';
     fc.options.forEach(function(opt, i){
       optionsHtml += '<button class="opt final-opt" data-idx="' + i + '">' + opt + '</button>';
     });
-
     wrap.innerHTML =
       '<span class="topic-badge">' + fc.topic + '</span>' +
       '<h3>' + fc.title + '</h3>' +
@@ -1604,7 +1554,6 @@
       '<p class="qtext-final"><strong>پرسش:</strong> ' + fc.question + '</p>' +
       '<div class="opt-list">' + optionsHtml + '</div>' +
       '<div class="fb" hidden></div>';
-
     return wrap;
   }
 
@@ -1613,19 +1562,15 @@
     if (ecgContainer) {
       var ftype = ecgContainer.getAttribute('data-final-type');
       if (ftype === 'morphology') {
-        var morphStr = ecgContainer.getAttribute('data-morph');
-        var morph = JSON.parse(decodeURIComponent(morphStr));
+        var morph = JSON.parse(decodeURIComponent(ecgContainer.getAttribute('data-morph')));
         drawMorphologyStrip(ecgContainer, morph, fc.label);
       } else if (ftype === 'ecg') {
-        var ecgType = ecgContainer.getAttribute('data-ecg-type');
-        var cfg = ECG_CONFIGS[ecgType];
+        var cfg = ECG_CONFIGS[ecgContainer.getAttribute('data-ecg-type')];
         if (cfg) drawECGStrip(ecgContainer, cfg);
       }
     }
-
     var opts = card.querySelectorAll('.final-opt');
     var fb = card.querySelector('.fb');
-
     function render(chosenIdx, isOk){
       opts.forEach(function(o, j){
         o.disabled = true;
@@ -1639,18 +1584,14 @@
         : '<strong>❌ پاسخ درست نیست.</strong> گزینه صحیح: «' + fc.options[fc.correct] + '». ';
       fb.innerHTML = head + '<br>' + fc.explanation;
     }
-
     opts.forEach(function(opt, idx){
       opt.addEventListener('click', function(){
         if(opt.disabled) return;
         var isOk = (idx === fc.correct);
         state.finals[fc.id] = { idx: idx, ok: isOk };
-        save();
-        render(idx, isOk);
-        updateProgress();
+        save(); render(idx, isOk); updateProgress();
       });
     });
-
     if(state.finals[fc.id]){
       render(state.finals[fc.id].idx, !!state.finals[fc.id].ok);
     }
@@ -1659,15 +1600,13 @@
   function renderFinals(){
     if(!finalsContainer) return;
     finalsContainer.innerHTML = '';
-    var order = shuffle(FINAL_DATA);
-    order.forEach(function(fc){
+    shuffle(FINAL_DATA).forEach(function(fc){
       var card = buildFinalCard(fc);
       finalsContainer.appendChild(card);
       wireFinalCard(card, fc);
     });
   }
 
-  /* ناوبری */
   var mainView = document.getElementById('mainView');
   var practiceView = document.getElementById('practiceView');
   var goPractice = document.getElementById('goPractice');
@@ -1692,7 +1631,6 @@
     renderFinals(); window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* ناوبری پایین */
   document.querySelectorAll('.bottom-nav a').forEach(function(link){
     link.addEventListener('click', function(e){
       var targetId = this.getAttribute('href');
@@ -1716,7 +1654,6 @@
     var current = '';
     sections.forEach(function(sec){
       var top = sec.offsetTop;
-      var height = sec.offsetHeight;
       if (window.pageYOffset >= top - 150) { current = sec.getAttribute('id'); }
     });
     navLinks.forEach(function(link){
